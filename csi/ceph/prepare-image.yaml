@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: prepare-image
+  namespace: rook-ceph
+  labels:
+    app: prepare-image
+spec:
+  selector:
+    matchLabels:
+      app: prepare-image
+  template:
+    metadata:
+      labels:
+        app: prepare-image
+    spec:
+#      nodeSelector:
+#        "shilintan.io/service-type-ceph": "v"
+      containers:
+        - name: ceph
+          image: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_ceph_ceph:v17.2.6
+          command:
+            - /bin/bash
+            - -c
+            - |
+              tail -f /dev/null
+        - name: rook
+          image: registry.cn-shanghai.aliyuncs.com/shilintan-public/rook_ceph:v1.12.8
+          command:
+            - /bin/bash
+            - -c
+            - |
+              tail -f /dev/null
+          imagePullPolicy: IfNotPresent
+      tolerations:
+        - key: "node.kubernetes.io/unreachable"
+          operator: "Exists"
+          effect: "NoExecute"
+          tolerationSeconds: 5

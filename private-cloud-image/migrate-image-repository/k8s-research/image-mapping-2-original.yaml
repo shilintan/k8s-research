@@ -1,0 +1,54 @@
+k8s:
+  kata-containers:
+    - s: quay.io/kata-containers/kata-deploy:3.2.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_kata-containers_kata-deploy:3.2.0
+  cilium:
+    - s: quay.io/cilium/cilium:v1.14.3
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_cilium_cilium:v1.14.3
+    - s: quay.io/cilium/operator-generic:v1.14.3
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_cilium_operator-generic:v1.14.3
+  openebs:
+    - s: registry.cn-hangzhou.aliyuncs.com/google_containers/csi-node-driver-registrar:v2.8.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/google_containers_csi-node-driver-registrar:v2.8.0
+    - s: openebs/lvm-driver:1.2.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/openebs_lvm-driver:1.2.0
+    - s: registry.cn-hangzhou.aliyuncs.com/google_containers/csi-resizer:v1.8.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/google_containers_csi-resizer:v1.8.0
+    - s: registry.cn-hangzhou.aliyuncs.com/google_containers/csi-snapshotter:v6.2.2
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/google_containers_csi-snapshotter:v6.2.2
+    - s: registry.cn-hangzhou.aliyuncs.com/google_containers/snapshot-controller:v6.2.2
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/google_containers_snapshot-controller:v6.2.2
+    - s: registry.cn-hangzhou.aliyuncs.com/google_containers/csi-provisioner:v3.5.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/google_containers_csi-provisioner:v3.5.0
+  nginx:
+    - s: bitnami/nginx-ingress-controller:1.9.3-debian-11-r0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/bitnami_nginx-ingress-controller:1.9.3-debian-11-r0
+    - s: grafana/promtail:2.8.3-amd64
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/grafana_promtail:2.8.3-amd64
+  ceph:
+    - s: shilintan/proxy_registry_gcr_io:k8s-staging-sig-storage--objectstorage-sidecar--objectstorage-sidecar--v20230130-v0.1.0-24-gc0cf995
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/shilintan_shilintan_proxy_registry_gcr_io:k8s-staging-sig-storage--objectstorage-sidecar--objectstorage-sidecar--v20230130-v0.1.0-24-gc0cf995
+    - s: quay.io/ceph/ceph:v17.2.6
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_ceph_ceph:v17.2.6
+    - s: quay.io/ceph/cosi:v0.1.1
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_ceph_cosi:v0.1.1
+    - s: quay.io/cephcsi/cephcsi:v3.9.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_cephcsi_cephcsi:v3.9.0
+    - s: quay.io/csiaddons/k8s-sidecar:v0.7.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_csiaddons_k8s-sidecar:v0.7.0
+    - s: shilintan/proxy_registry_k8s_io:sig-storage--csi-attacher--v4.3.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/shilintan_proxy_registry_k8s_io:sig-storage--csi-attacher--v4.3.0
+    - s: shilintan/proxy_registry_k8s_io:sig-storage--csi-node-driver-registrar--v2.8.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/shilintan_proxy_registry_k8s_io:sig-storage--csi-node-driver-registrar--v2.8.0
+    - s: shilintan/proxy_registry_k8s_io:sig-storage--csi-provisioner--v3.5.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/shilintan_proxy_registry_k8s_io:sig-storage--csi-provisioner--v3.5.0
+    - s: shilintan/proxy_registry_k8s_io:sig-storage--csi-resizer--v1.8.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/shilintan_proxy_registry_k8s_io:sig-storage--csi-resizer--v1.8.0
+    - s: shilintan/proxy_registry_k8s_io:sig-storage--csi-snapshotter--v6.2.2
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/shilintan_proxy_registry_k8s_io:sig-storage--csi-snapshotter--v6.2.2
+    - s: rook/ceph:v1.12.8
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/rook_ceph:v1.12.8
+    - s: minio/mc:RELEASE.2023-11-20T16-30-59Z.fips
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/minio_mc:RELEASE.2023-11-20T16-30-59Z.fips
+    - s: machines/filestash:6b271d3
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/machines_filestash:6b271d3

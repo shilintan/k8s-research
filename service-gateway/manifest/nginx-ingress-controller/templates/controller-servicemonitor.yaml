@@ -1,0 +1,27 @@
+---
+# Source: nginx-ingress-controller/templates/controller-servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: release-name-nginx-ingress-controller
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: nginx-ingress-controller
+    helm.sh/chart: nginx-ingress-controller-9.7.7
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+  annotations:
+spec:
+  jobLabel: ""
+  endpoints:
+    - port: metrics
+      interval: 30s
+  namespaceSelector:
+    matchNames:
+      - default
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx-ingress-controller
+      app.kubernetes.io/instance: release-name
+      app.kubernetes.io/component: metrics

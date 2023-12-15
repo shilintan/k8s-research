@@ -1,0 +1,26 @@
+---
+# Source: nginx-ingress-controller/templates/controller-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: release-name-nginx-ingress-controller
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: nginx-ingress-controller
+    helm.sh/chart: nginx-ingress-controller-9.7.7
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: controller
+data:
+  access-log-path: /log/access.log
+  enable-underscores-in-headers: "true"
+  error-log-path: /log/error.log
+  gzip-min-length: "512"
+  log-format-upstream: '{"time": "$time_iso8601", "remote_addr": "$remote_addr", "real_ip":
+    "$http_x_real_ip", "request_id": "$req_id", "bytes_sent": $bytes_sent, "request_time":
+    $request_time, "status":$status, "vhost": "$host", "request_proto": "$server_protocol",
+    "path": "$uri", "request_query": "$args", "request_length": $request_length,"method":
+    "$request_method", "http_referrer": "$http_referer", "http_user_agent": "$http_user_agent"}'
+  max-worker-connections: "65535"
+  upstream-keepalive-requests: "100000"
+  use-gzip: "true"

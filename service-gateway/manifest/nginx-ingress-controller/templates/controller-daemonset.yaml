@@ -1,0 +1,172 @@
+---
+# Source: nginx-ingress-controller/templates/controller-daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: release-name-nginx-ingress-controller
+  namespace: "default"
+  labels:
+    app.kubernetes.io/name: nginx-ingress-controller
+    helm.sh/chart: nginx-ingress-controller-9.7.7
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: controller
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx-ingress-controller
+      app.kubernetes.io/instance: release-name
+      app.kubernetes.io/component: controller
+  revisionHistoryLimit: 10
+  updateStrategy:
+    rollingUpdate:
+      maxSurge: 10%
+      maxUnavailable: 0
+    type: RollingUpdate
+  minReadySeconds: 0
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nginx-ingress-controller
+        helm.sh/chart: nginx-ingress-controller-9.7.7
+        app.kubernetes.io/instance: release-name
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: controller
+    spec:
+      
+      dnsPolicy: ClusterFirst
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: nginx-ingress-controller
+                    app.kubernetes.io/instance: release-name
+                    app.kubernetes.io/component: controller
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      nodeSelector:
+        shilintan.io/service-type-gateway: v
+      hostNetwork: false
+      serviceAccountName: release-name-nginx-ingress-controller
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: controller
+          image: registry.cn-shanghai.aliyuncs.com/shilintan-public/bitnami_nginx-ingress-controller:1.8.1-debian-11-r24
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - /nginx-ingress-controller
+            - --default-backend-service=
+            - --election-id=ingress-controller-leader
+            - --controller-class=k8s.io/ingress-nginx
+            - --configmap=default/release-name-nginx-ingress-controller
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: TZ
+              value: Asia/Shanghai
+          envFrom:
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+          readinessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+          startupProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+            tcpSocket:
+              port: 10254
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+              hostPort: 80
+            - name: https
+              containerPort: 443
+              protocol: TCP
+              hostPort: 443
+            - name: metrics
+              containerPort: 10254
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 7000m
+              ephemeral-storage: 10Gi
+              memory: 10240Mi
+            requests:
+              cpu: 10m
+              ephemeral-storage: 1Gi
+              memory: 100Mi
+          volumeMounts:
+            - mountPath: /log
+              name: logs-dir
+        - args:
+          - -config.file=/etc/promtail/config.yaml
+          - -config.expand-env=true
+          env:
+          - name: TZ
+            value: Asia/Shanghai
+          - name: ENVIRONMENT_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: REPLICASET_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['app.kubernetes.io/name']
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          image: grafana/promtail:2.9.2
+          imagePullPolicy: IfNotPresent
+          name: promtail
+          resources:
+            limits:
+              cpu: 500m
+              ephemeral-storage: 10Gi
+              memory: 500Mi
+            requests:
+              cpu: 50m
+              ephemeral-storage: 1Gi
+              memory: 50Mi
+          volumeMounts:
+          - mountPath: /mnt
+            name: logs-dir
+          - mountPath: /etc/promtail
+            name: promtail-config
+      volumes:
+        - emptyDir: {}
+          name: logs-dir
+        - configMap:
+            name: loki-promtail-gateway-nginx
+          name: promtail-config

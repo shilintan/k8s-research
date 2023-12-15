@@ -1,0 +1,104 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oss-ui
+  namespace: rook-ceph
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+spec:
+  rules:
+    - host: oss-ui.shilintan.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: oss-ui
+                port:
+                  number: 8334
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oss-ui
+  namespace: rook-ceph
+spec:
+  selector:
+    app: oss-ui
+  ports:
+    - protocol: TCP
+      port: 8334
+      targetPort: 8334
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: oss-ui
+  namespace: rook-ceph
+  labels:
+    app: oss-ui
+spec:
+  serviceName: oss-ui
+  replicas: 1
+  template:
+    metadata:
+      name: oss-ui
+      labels:
+        app: oss-ui
+    spec:
+#      nodeSelector:
+#        "shilintan.io/service-type-middleware": "v"
+      containers:
+        - name: oss-ui
+          image: registry.cn-shanghai.aliyuncs.com/shilintan-public/machines_filestash:6b271d3
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8334
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+          livenessProbe:
+            tcpSocket:
+              port: 8334
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 5
+          readinessProbe:
+            tcpSocket:
+              port: 8334
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 5
+          volumeMounts:
+            - mountPath: /app/data/state/
+              name: data
+          resources:
+            requests:
+              cpu: 10m
+              memory: 100Mi
+              ephemeral-storage: 1Gi
+            limits:
+              cpu: 5000m
+              memory: 9000Mi
+              ephemeral-storage: 10Gi
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: oss-ui
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        storageClassName: openebs-lvmpv
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi

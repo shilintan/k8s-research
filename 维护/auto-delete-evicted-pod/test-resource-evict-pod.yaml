@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-resource-evict-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-resource-evict-pod
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: test-resource-evict-pod
+    spec:
+      nodeSelector:
+        "shilintan.io/service-type-service-java": "v"
+      containers:
+        - name: app
+          image: busybox:1
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
+              ephemeral-storage: 100Mi
+            requests:
+              cpu: 10m
+              memory: 10Mi
+              ephemeral-storage: 100Mi
+          volumeMounts:
+            - mountPath: /test
+              name: test
+          command:
+            - sh
+            - -c
+            - "sleep 99999"
+      terminationGracePeriodSeconds: 0
+      volumes:
+        - name: test
+          emptyDir: {}

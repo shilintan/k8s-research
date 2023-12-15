@@ -1,0 +1,23 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    chart: lvm-localpv-1.2.0
+    heritage: Helm
+    name: openebs-lvm-node
+    openebs.io/component-name: openebs-lvm-node
+    openebs.io/version: 1.2.0
+    release: openebs
+    role: openebs-lvm
+  name: lvm-node
+  namespace: openebs
+spec:
+  endpoints:
+    - interval: 5s
+      port: metrics
+      path: /metrics
+  selector:
+    matchLabels:
+      app: openebs-lvm-node

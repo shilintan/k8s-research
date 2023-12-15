@@ -1,0 +1,18 @@
+---
+# Source: lvm-localpv/templates/priority-class.yaml
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: release-name-lvm-localpv-csi-controller-critical
+value: 900000000
+globalDefault: false
+description: "This priority class should be used for the CStor CSI driver controller deployment only."
+---
+# Source: lvm-localpv/templates/priority-class.yaml
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: release-name-lvm-localpv-csi-node-critical
+value: 900001000
+globalDefault: false
+description: "This priority class should be used for the CStor CSI driver node deployment only."

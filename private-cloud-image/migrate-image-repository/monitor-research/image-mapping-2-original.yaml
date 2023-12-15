@@ -1,0 +1,40 @@
+#    - s:
+#      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/
+monitor:
+  prometheus:
+    - s: grafana/grafana:9.3.2
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/grafana_grafana:9.3.2
+    - s: quay.io/prometheus/blackbox-exporter:v0.23.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_prometheus_blackbox-exporter:v0.23.0
+    - s: jimmidyson/configmap-reload:v0.5.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/jimmidyson_configmap-reload:v0.5.0
+    - s: quay.io/brancz/kube-rbac-proxy:v0.14.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_brancz_kube-rbac-proxy:v0.14.0
+    - s: quay.io/prometheus/node-exporter:v1.5.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_prometheus_node-exporter:v1.5.0
+    - s: quay.io/prometheus/prometheus:v2.41.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_prometheus_prometheus:v2.41.0
+    - s: quay.io/prometheus/alertmanager:v0.25.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_prometheus_alertmanager:v0.25.0
+    - s: docker.io/shilintan/proxy_registry_k8s_io:kube-state-metrics--kube-state-metrics--v2.7.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/docker.io_shilintan_proxy_registry_k8s_io:kube-state-metrics--kube-state-metrics--v2.7.0
+    - s: docker.io/shilintan/proxy_registry_k8s_io:prometheus-adapter--prometheus-adapter--v0.10.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/docker.io_shilintan_proxy_registry_k8s_io:prometheus-adapter--prometheus-adapter--v0.10.0
+    - s: quay.io/prometheus-operator/prometheus-operator:v0.62.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_prometheus-operator_prometheus-operator:v0.62.0
+    - s: timonwong/prometheus-webhook-dingtalk:v2.1.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/timonwong_prometheus-webhook-dingtalk:v2.1.0
+  loki:
+    - s: docker.io/nginxinc/nginx-unprivileged:1.25.2
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/docker.io_nginxinc_nginx-unprivileged:1.25.2
+    - s: docker.io/grafana/loki:2.9.2-amd64
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/docker.io_grafana_loki:2.9.2-amd64
+    - s: docker.io/grafana/promtail:2.9.2
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/docker.io_grafana_promtail:2.9.2
+  skywalking:
+    - s: busybox:1.36
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/busybox:1.36
+    - s: skywalking.docker.scarf.sh/apache/skywalking-ui:9.6.0-java17
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/skywalking.docker.scarf.sh_apache_skywalking-ui:9.6.0-java17
+    - s: skywalking.docker.scarf.sh/apache/skywalking-oap-server:9.6.0-java17
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/skywalking.docker.scarf.sh_apache_skywalking-oap-server:9.6.0-java17

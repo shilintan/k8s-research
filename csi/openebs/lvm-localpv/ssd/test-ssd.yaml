@@ -1,0 +1,32 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: csi-lvmpv
+spec:
+  storageClassName: openebs-lvmpv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 4Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fio
+spec:
+  restartPolicy: Never
+  containers:
+    - name: perfrunner
+      image: openebs/tests-fio:latest
+      command: ["/bin/bash"]
+      args: ["-c", "while true ;do sleep 50; done"]
+      volumeMounts:
+        - mountPath: /datadir
+          name: fio-vol
+      tty: true
+  volumes:
+    - name: fio-vol
+      persistentVolumeClaim:
+        claimName: csi-lvmpv

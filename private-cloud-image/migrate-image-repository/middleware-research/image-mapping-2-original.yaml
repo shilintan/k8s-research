@@ -1,0 +1,82 @@
+#    - s:
+#      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/
+middleware:
+  tool:
+    - s: alpine/curl:8.4.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/alpine/curl:8.4.0
+  kuboard:
+    - s: swr.cn-east-2.myhuaweicloud.com/kuboard/etcd:v3.4.14
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/swr.cn-east-2.myhuaweicloud.com_kuboard_etcd:v3.4.14
+    - s: swr.cn-east-2.myhuaweicloud.com/kuboard/kuboard:v3
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/swr.cn-east-2.myhuaweicloud.com_kuboard_kuboard:v3
+  minio:
+    - s: docker.io/bitnami/minio:2023.11.11-debian-11-r0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/docker.io_bitnami_minio:2023.11.11-debian-11-r0
+  mongodb:
+    - s: bitnami/mongodb:5.0.19-debian-11-r19
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/bitnami_mongodb:5.0.19-debian-11-r19
+    - s: bitnami/mongodb-exporter:0.39.0-debian-11-r53
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/bitnami_mongodb-exporter:0.39.0-debian-11-r53
+    - s: mongo-express:1.0.0-20
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/mongo-express:1.0.0-20
+  mysql:
+    - s: mysql:8.0.35
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/mysql:8.0.35
+    - s: mysql/mysql-router:8.0.32
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/mysql_mysql-router:8.0.32
+    - s: mydumper/mydumper:v0.15.2-6
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/mydumper_mydumper:v0.15.2-6
+    - s: prom/mysqld-exporter:v0.15.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/prom_mysqld-exporter:v0.15.0
+    - s: phpmyadmin:5.2.1
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/phpmyadmin:5.2.1
+  nacos:
+    - s: nacos/nacos-server:v2.2.3
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/nacos_nacos-server:v2.2.3
+  redis:
+    - s: bitnami/redis:7.2.2-debian-11-r0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/bitnami_redis:7.2.2-debian-11-r0
+    - s: bitnami/redis-sentinel:7.2.2-debian-11-r0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/bitnami_redis-sentinel:7.2.2-debian-11-r0
+    - s: bitnami/redis-exporter:1.55.0-debian-11-r0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/bitnami_redis-exporter:1.55.0-debian-11-r0
+    - s: ghcr.io/joeferner/redis-commander:0.8.1
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/ghcr.io_joeferner_redis-commander:0.8.1
+  xxljob:
+    - s: xuxueli/xxl-job-admin:2.4.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/xuxueli_xxl-job-admin:2.4.0
+  zookeeper:
+    - s: bitnami/zookeeper:3.9.1-debian-11-r1
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/bitnami_zookeeper:3.9.1-debian-11-r1
+    - s: elkozmon/zoonavigator:1.1.2
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/elkozmon_zoonavigator:1.1.2
+  elasticsearch:
+    - s: busybox:1.36
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/busybox:1.36
+    - s: elasticsearch:7.17.7
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/elasticsearch:7.17.7
+    - s: quay.io/prometheuscommunity/elasticsearch-exporter:v1.6.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_prometheuscommunity_elasticsearch-exporter:v1.6.0
+    - s: appbaseio/dejavu:3.6.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/appbaseio_dejavu:3.6.0
+    - s: kibana:7.17.7
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/kibana:7.17.7
+  #  额外的
+  gitlab:
+    - s: gitlab/gitlab-ce:16.6.0-ce.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/gitlab_gitlab-ce:16.6.0-ce.0
+  gitlab-runner:
+    - s: gitlab/gitlab-runner:v16.6.0
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/gitlab_gitlab-runner:v16.6.0
+    - s: debian:bookworm
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/debian:bookworm
+    - s: maven:3.9-eclipse-temurin-8-alpine
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/maven:3.9-eclipse-temurin-8-alpine
+    - s: quay.io/buildah/stable:v1.31
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_buildah_stable:v1.31
+    - s: bitnami/kubectl:1.25
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/bitnami_kubectl:1.25
+    - s: node:16.20.2
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/node:16.20.2
+    - s: docker.io/shilintan/custom-apache_skywalking-java-agent:9.0.0-java17
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/shilintan_custom-apache_skywalking-java-agent:9.0.0-java17

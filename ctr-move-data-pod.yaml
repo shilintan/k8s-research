@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ctr-move-data-pod
+spec:
+  containers:
+    - name: web
+      image: busybox:1.36
+      command:
+        - /bin/bash
+        - -ec
+        - |
+          sleep 9999999999
+      volumeMounts:
+        - name: targetpvc
+          mountPath: /targetpvc
+        - name: k8slpv
+          mountPath: /k8slpv
+  volumes:
+    - name: targetpvc
+      persistentVolumeClaim:
+        claimName: target-pvc
+    - name: k8slpv
+      hostPath:
+        path: /k8slpv
