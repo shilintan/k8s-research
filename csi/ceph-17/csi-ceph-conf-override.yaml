@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: csi-ceph-conf-override
+  namespace: rook-ceph # namespace:operator
+data:
+  ceph.conf: |
+    [client]
+    rbd default stripe_unit = 16777216
+    rbd default stripe_count = 16
+    rbd default features = 12
+    rbd default format = 2
+    rbd default order = 23
+#osd_pool_erasure_code_stripe_unit = 16384
+#osd_pool_erasure_code_stripe_width = 65536
