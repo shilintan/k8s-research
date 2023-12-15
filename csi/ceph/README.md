@@ -172,7 +172,11 @@ kubectl -n rook-ceph wait pods -l mgr=a --for=condition=Ready=true --timeout=180
 kubectl -n rook-ceph wait pods -l mgr=b --for=condition=Ready=true --timeout=180s
 kubectl -n rook-ceph wait pods -l mon=a --for=condition=Ready=true --timeout=180s
 kubectl -n rook-ceph wait pods -l app=rook-ceph-tools --for=condition=Ready=true --timeout=180s
+```
 
+rgw
+
+```
 kubectl apply -f	object.yaml
 kubectl -n rook-ceph wait pods -l rgw=my-store --for=condition=Ready=true --timeout=180s
 kubectl apply -f	object-user.yaml
@@ -180,6 +184,12 @@ kubectl apply -f	object-ingress.yaml
 
 kubectl apply -f	object-storage-ui.yaml
 kubectl -n rook-ceph wait pods -l app=oss-ui --for=condition=Ready=true --timeout=180s
+```
+
+rdb
+
+```
+kubectl apply -f	rbd-storageclass.yaml
 ```
 
 临时网络
@@ -309,6 +319,7 @@ kubectl -n rook-ceph logs -f --tail 300 rook-ceph-osd-1-6868686568-zgpxt
 kubectl -n rook-ceph logs -f --tail 300 rook-ceph-rgw-my-store-a-594fd5578b-mgf56
 kubectl -n rook-ceph logs -f --tail 300 rook-ceph-rgw-my-store-a-594fd5578b-rpp9b
 kubectl -n rook-ceph logs -f --tail 300 oss-ui-0
+kubectl -n rook-ceph logs -f --tail 300 -l app=csi-rbdplugin-provisioner
 
 kubectl -n rook-ceph delete pod -l app=rook-ceph-operator
 kubectl -n rook-ceph delete pod -l mon=a
@@ -318,6 +329,17 @@ kubectl -n rook-ceph delete pod -l mon=c
 kubectl -n rook-ceph edit pod rook-ceph-mgr-a-c9bfcbff9-7dzxk
 kubectl -n rook-ceph edit pod rook-ceph-mgr-b-6f47cd9574-c9zp
 kubectl -n rook-ceph edit pod rook-ceph-mon-a-56db4b4444-b7zw4
+```
+
+rbd
+
+```
+kubectl -n rook-ceph get CephCluster
+kubectl -n rook-ceph get CephBlockPool
+kubectl get storageclass
+
+kubectl -n rook-ceph describe CephCluster   rook-ceph
+kubectl -n rook-ceph describe CephBlockPool replicapool
 ```
 
 调试ceph
@@ -365,6 +387,23 @@ kubectl -n rook-ceph describe pod oss-ui-0
 kubectl -n rook-ceph logs -f --tail 300 oss-ui-0
 kubectl -n rook-ceph exec -it oss-ui-0 -- bash
 ```
+
+# 测试
+
+## rbd
+
+```
+kubectl apply -f test-rdb.yaml
+
+kubectl delete -f test-rdb.yaml
+
+kubectl get pvc
+kubectl get pod
+kubectl describe pvc csi-rbd-demo-ephemeral-pod-mypvc
+kubectl describe pod csi-rbd-demo-ephemeral-pod
+```
+
+
 
 # 调试
 
@@ -498,7 +537,7 @@ Backend
 
 服务参数DefaultLimitNOFILE不能超过1073741820
 
-
+ceph 与ssd的兼容性有问题, 貌似无法使用ssd
 
 # 测试
 
