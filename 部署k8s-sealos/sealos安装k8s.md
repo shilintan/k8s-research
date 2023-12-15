@@ -100,11 +100,7 @@ systemctl daemon-reload
 ```shell
 sealos load -i kubernetes-v1.25.0.tar
 sealos load -i helm-v3.8.2.tar
-
-sealos load -i calico-v3.24.1.tar
-
 sealos images
-
 rm -rf kubernetes-v1.25.0.tar helm-v3.8.2.tar
 ```
 

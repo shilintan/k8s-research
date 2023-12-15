@@ -18,14 +18,14 @@ spec:
 #        "shilintan.io/service-type-ceph": "v"
       containers:
         - name: ceph
-          image: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_ceph_ceph:v17.2.6
+          image: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_ceph_ceph:v18.2.0
           command:
             - /bin/bash
             - -c
             - |
               tail -f /dev/null
         - name: rook
-          image: registry.cn-shanghai.aliyuncs.com/shilintan-public/rook_ceph:v1.12.8
+          image: registry.cn-shanghai.aliyuncs.com/shilintan-public/rook_ceph:v1.13.0
           command:
             - /bin/bash
             - -c

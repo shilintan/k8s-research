@@ -1496,7 +1496,7 @@ ipam:
   ciliumNodeUpdateRate: "15s"
   operator:
     # -- IPv4 CIDR list range to delegate to individual nodes for IPAM.
-    clusterPoolIPv4PodCIDRList: ["10.10.0.0/8"]
+    clusterPoolIPv4PodCIDRList: ["10.10.0.0/16"]
     # -- IPv4 CIDR mask size to delegate to individual nodes for IPAM.
     clusterPoolIPv4MaskSize: 24
     # -- IPv6 CIDR list range to delegate to individual nodes for IPAM.
@@ -1508,7 +1508,7 @@ ipam:
       # default:
       #   ipv4:
       #     cidrs:
-      #       - 10.10.0.0/8
+      #       - 10.10.0.0/16
       #     maskSize: 24
       # other:
       #   ipv6:

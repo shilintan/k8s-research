@@ -291,13 +291,14 @@ kubectl -n rook-ceph get CephObjectStore
 kubectl -n rook-ceph edit CephObjectStore my-store
 
 kubectl -n rook-ceph describe pod -l app=rook-ceph-operator
+kubectl -n rook-ceph describe pod -l app=prepare-image
 kubectl -n rook-ceph describe pod rook-ceph-csi-detect-version-vpm4n
 kubectl -n rook-ceph describe pod rook-ceph-detect-version-kcqsv
 kubectl -n rook-ceph describe pod mgr=a
 kubectl -n rook-ceph describe pod mgr=b
 kubectl -n rook-ceph describe pod rook-ceph-mon-a-86b79bb78f-kq8km
 kubectl -n rook-ceph describe CephObjectStore my-store
-kubectl -n rook-ceph describe pod rook-ceph-csi-detect-version-jl2h2
+kubectl -n rook-ceph describe pod -l app=rook-ceph-csi-detect-version
 kubectl -n rook-ceph describe pod rook-ceph-tools-0
 kubectl -n rook-ceph describe pod -l app=prepare-image
 kubectl -n rook-ceph describe pod -l app=oss-ui
@@ -322,6 +323,7 @@ kubectl -n rook-ceph logs -f --tail 300 oss-ui-0
 kubectl -n rook-ceph logs -f --tail 300 -l app=csi-rbdplugin-provisioner
 
 kubectl -n rook-ceph delete pod -l app=rook-ceph-operator
+kubectl -n rook-ceph delete pod -l app=prepare-image
 kubectl -n rook-ceph delete pod -l mon=a
 kubectl -n rook-ceph delete pod -l mon=b
 kubectl -n rook-ceph delete pod -l mon=c
@@ -329,6 +331,8 @@ kubectl -n rook-ceph delete pod -l mon=c
 kubectl -n rook-ceph edit pod rook-ceph-mgr-a-c9bfcbff9-7dzxk
 kubectl -n rook-ceph edit pod rook-ceph-mgr-b-6f47cd9574-c9zp
 kubectl -n rook-ceph edit pod rook-ceph-mon-a-56db4b4444-b7zw4
+kubectl -n rook-ceph edit pod rook-ceph-osd-0-6d44776b46-r59j4
+kubectl -n rook-ceph edit pod csi-cephfsplugin-4txkq
 ```
 
 rbd
@@ -360,11 +364,12 @@ ceph pg stat
 
 
 # 删除磁盘
+ceph osd tree
 ceph osd out osd.0
 ceph osd purge 3 --yes-i-really-mean-it
-ceph osd crush remove 0
-# ceph auth rm osd.4
-# ceph osd rm 4
+ceph osd crush remove osd.0
+ceph auth rm osd.0
+ceph osd  rm osd.0
 # 观察数据迁移过程
 ceph -w
 ```
