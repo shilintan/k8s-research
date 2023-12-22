@@ -11,7 +11,7 @@ metadata:
     nginx.ingress.kubernetes.io/enable-cors: "true"
 spec:
   rules:
-    - host: oss.test.shilintan.com
+    - host: oss.shilintan.com
       http:
         paths:
           - pathType: Prefix

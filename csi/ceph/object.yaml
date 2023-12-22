@@ -53,7 +53,7 @@ spec:
     # The port that RGW pods will listen on (https). An ssl certificate is required.
     # securePort: 443
     # The number of pods in the rgw deployment
-    instances: 2
+    instances: 3
     # The affinity rules to apply to the rgw deployment.
     placement:
       podAntiAffinity:
@@ -66,19 +66,15 @@ spec:
                     operator: In
                     values:
                       - rook-ceph-rgw
-              # topologyKey: */zone can be used to spread RGW across different AZ
-              # Use <topologyKey: failure-domain.beta.kubernetes.io/zone> in k8s cluster if your cluster is v1.16 or lower
-              # Use <topologyKey: topology.kubernetes.io/zone>  in k8s cluster is v1.17 or upper
               topologyKey: kubernetes.io/hostname
-    # A key/value list of annotations
-    #  nodeAffinity:
-    #    requiredDuringSchedulingIgnoredDuringExecution:
-    #      nodeSelectorTerms:
-    #      - matchExpressions:
-    #        - key: role
-    #          operator: In
-    #          values:
-    #          - rgw-node
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: shilintan.io/service-type-storage-ceph
+                  operator: In
+                  values:
+                    - v
     #  topologySpreadConstraints:
     #  tolerations:
     #  - key: rgw-node

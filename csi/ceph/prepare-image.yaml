@@ -14,8 +14,8 @@ spec:
       labels:
         app: prepare-image
     spec:
-#      nodeSelector:
-#        "shilintan.io/service-type-ceph": "v"
+      nodeSelector:
+        "shilintan.io/service-type-storage-ceph": "v"
       containers:
         - name: ceph
           image: registry.cn-shanghai.aliyuncs.com/shilintan-public/quay.io_ceph_ceph:v18.2.0

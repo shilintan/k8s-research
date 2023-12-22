@@ -174,6 +174,12 @@ kubectl -n rook-ceph wait pods -l mon=a --for=condition=Ready=true --timeout=180
 kubectl -n rook-ceph wait pods -l app=rook-ceph-tools --for=condition=Ready=true --timeout=180s
 ```
 
+rdb
+
+```
+kubectl apply -f	rbd-storageclass.yaml
+```
+
 rgw
 
 ```
@@ -184,12 +190,6 @@ kubectl apply -f	object-ingress.yaml
 
 kubectl apply -f	object-storage-ui.yaml
 kubectl -n rook-ceph wait pods -l app=oss-ui --for=condition=Ready=true --timeout=180s
-```
-
-rdb
-
-```
-kubectl apply -f	rbd-storageclass.yaml
 ```
 
 临时网络
@@ -221,10 +221,17 @@ kubectl -n rook-ceph logs -f --tail 300 load-generator
 
 mc alias set s3 http://rook-ceph-rgw-my-store:80 EIKH91E57ZQ4H1HF4LSQ bBSzQu3FK3dWTDWXI0mZ25JhI0CGCXDK1WoxTEve
 
-BUCKET_NAME=bigdatacenter
+BUCKET_NAME=bigdatacloud
 mc mb s3/${BUCKET_NAME}
 mc anonymous set download s3/${BUCKET_NAME}
 mc anonymous get-json s3/${BUCKET_NAME}
+```
+
+或者旧版本的cpu, 修改虚拟机的cpu虚拟化方式为host方式
+
+```
+kubectl -n rook-ceph delete pod load-generator
+kubectl -n rook-ceph run -it --tty --command load-generator --image=minio/mc:RELEASE.2023-12-14T00-37-41Z-cpuv1 -- sh
 ```
 
 直接为ceph-rgw设置cors(可选)
@@ -282,6 +289,7 @@ s3cmd setcors cors.xml s3://culturecloud
 
 ```
 kubectl -n rook-ceph get all
+kubectl -n rook-ceph get pvc
 kubectl -n rook-ceph get pod -o wide
 kubectl -n rook-ceph get endpoints
 kubectl -n rook-ceph get svc
@@ -524,7 +532,7 @@ Backend
 
 ​			Secret access key:	KFPIO6AXaHs8VfkbHZDZsz2fHgsTvHEWmgAJOjUo
 
-​			Endpoint:			http://172.30.0.105:31161
+​			Endpoint:			http://10.88.201.23:31483
 
 
 
@@ -546,30 +554,39 @@ ceph 与ssd的兼容性有问题, 貌似无法使用ssd
 
 # 测试
 
+```
+apt-get install -y fio
+
+mkdir -p /root/test
+TEST_PATH=/root/test
+```
+
+
+
 ## 测试IOPS
 
 - 顺序读
 
   ```routeros
-  fio --name=test --directory=/mnt/sdb --ioengine=libpmem --direct=1 --thread=8 --numjobs=8 --iodepth=1 --rw=read --bs=4k --size=8GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
+  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=8 --iodepth=1 --rw=read --bs=4k --size=8GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
   ```
 
 - 顺序写
 
   ```routeros
-  fio --name=test --directory=/mnt/sdb --ioengine=libpmem --direct=1 --thread=8 --numjobs=8 --iodepth=1 --rw=write --bs=4k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
+  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=8 --iodepth=1 --rw=write --bs=4k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
   ```
 
 - 随机读
 
   ```routeros
-  fio --name=test --directory=/mnt/sdb --ioengine=libpmem --direct=1 --thread=8 --numjobs=8 --iodepth=1 --rw=randread --bs=4k --size=8GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
+  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=8 --iodepth=1 --rw=randread --bs=4k --size=8GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
   ```
 
 - 随机写
 
   ```routeros
-  fio --name=test --directory=/mnt/sdb --ioengine=libpmem --direct=1 --thread=8 --numjobs=8 --iodepth=1 --rw=randwrite --bs=4k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
+  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=8 --iodepth=1 --rw=randwrite --bs=4k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
   ```
 
 ## 测试吞吐量
@@ -577,25 +594,25 @@ ceph 与ssd的兼容性有问题, 貌似无法使用ssd
 - 顺序读
 
   ```routeros
-  fio --name=test --directory=/mnt/sdb --ioengine=libpmem --direct=1 --thread=8 --numjobs=96 --iodepth=1 --rw=read --bs=64k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
+  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=96 --iodepth=1 --rw=read --bs=64k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
   ```
 
 - 顺序写
 
   ```routeros
-  fio --name=test --directory=/mnt/sdb --ioengine=libpmem --direct=1 --thread=1 --numjobs=8 --iodepth=1 --rw=write --bs=64k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
+  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=1 --numjobs=8 --iodepth=1 --rw=write --bs=64k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
   ```
 
 - 随机读
 
   ```routeros
-  fio --name=test --directory=/mnt/sdb --ioengine=libpmem --direct=1 --thread=8 --numjobs=96 --iodepth=1 --rw=randread --bs=64k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
+  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=96 --iodepth=1 --rw=randread --bs=64k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
   ```
 
 - 随机写
 
   ```routeros
-  fio --name=test --directory=/mnt/sdb --ioengine=libpmem --direct=1 --thread=8 --numjobs=96 --iodepth=1 --rw=randwrite --bs=64k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
+  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=96 --iodepth=1 --rw=randwrite --bs=64k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
   ```
 
 ## 测试访问时延
@@ -603,13 +620,13 @@ ceph 与ssd的兼容性有问题, 貌似无法使用ssd
 - 顺序读
 
   ```routeros
-  fio --name=test --directory=/mnt/sdb --ioengine=libpmem --direct=1 --thread=1 --numjobs=1 --iodepth=1 --rw=read --bs=4k --size=8GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
+  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=1 --numjobs=1 --iodepth=1 --rw=read --bs=4k --size=8GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
   ```
 
 - 顺序写
 
   ```routeros
-  fio --name=test --directory=/mnt/sdb --ioengine=libpmem --direct=1 --thread=1 --numjobs=1 --iodepth=1 --rw=write --bs=4k --size=8GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
+  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=1 --numjobs=1 --iodepth=1 --rw=write --bs=4k --size=8GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
   ```
 
 

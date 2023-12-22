@@ -233,12 +233,14 @@ data:
   # CSI_CEPHFS_PLUGIN_NODE_AFFINITY: "role=cephfs-node"
   # NOTE: Support for defining NodeAffinity for operators other than "In" and "Exists" requires the user to input a
   # valid v1.NodeAffinity JSON or YAML string. For example, the following is valid YAML v1.NodeAffinity:
-  # CSI_CEPHFS_PLUGIN_NODE_AFFINITY: |
-  #   requiredDuringSchedulingIgnoredDuringExecution:
-  #     nodeSelectorTerms:
-  #       - matchExpressions:
-  #         - key: myKey
-  #           operator: DoesNotExist
+  CSI_CEPHFS_PLUGIN_NODE_AFFINITY: |
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: shilintan.io/service-type-storage-ceph
+              operator: In
+              values:
+                -  v
   # (Optional) CephCSI CephFS plugin tolerations list(if specified, overrides CSI_PLUGIN_TOLERATIONS).
   # Put here list of taints you want to tolerate in YAML format.
   # CSI plugins need to be started on all the nodes where the clients need to mount the storage.
@@ -543,12 +545,14 @@ data:
   # (Optional) Rook Discover priority class name to set on the pod(s)
   # DISCOVER_PRIORITY_CLASS_NAME: "<PriorityClassName>"
   # (Optional) Discover Agent NodeAffinity.
-  # DISCOVER_AGENT_NODE_AFFINITY: |
-  #   requiredDuringSchedulingIgnoredDuringExecution:
-  #     nodeSelectorTerms:
-  #       - matchExpressions:
-  #         - key: myKey
-  #           operator: DoesNotExist
+  DISCOVER_AGENT_NODE_AFFINITY: |
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: shilintan.io/service-type-storage-ceph
+            operator: In
+            values:
+            -  v
   # (Optional) Discover Agent Pod Labels.
   # DISCOVER_AGENT_POD_LABELS: "key1=value1,key2=value2"
   # Disable automatic orchestration when new devices are discovered
@@ -590,6 +594,8 @@ spec:
       labels:
         app: rook-ceph-operator
     spec:
+      nodeSelector:
+        "shilintan.io/service-type-storage-ceph": "v"
       tolerations:
         - effect: NoExecute
           key: node.kubernetes.io/unreachable

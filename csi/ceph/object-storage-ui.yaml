@@ -50,8 +50,8 @@ spec:
       labels:
         app: oss-ui
     spec:
-#      nodeSelector:
-#        "shilintan.io/service-type-middleware": "v"
+      nodeSelector:
+        "shilintan.io/service-type-storage-ceph": "v"
       containers:
         - name: oss-ui
           image: registry.cn-shanghai.aliyuncs.com/shilintan-public/machines_filestash:6b271d3

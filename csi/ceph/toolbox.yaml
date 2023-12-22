@@ -16,6 +16,8 @@ spec:
       labels:
         app: rook-ceph-tools
     spec:
+      nodeSelector:
+        "shilintan.io/service-type-storage-ceph": "v"
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: rook-ceph-tools

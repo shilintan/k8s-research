@@ -52,9 +52,9 @@ sed -i 's#deb.debian.org#mirrors.163.com#g' /etc/apt/sources.list && sed -i 's#s
 
 ```
 # 从集群拷贝文件
-scp root@172.30.0.102:/root/sealos_4.3.3_linux_amd64.tar.gz 	/root/sealos_4.3.3_linux_amd64.tar.gz
-scp root@172.30.0.102:/root/helm-v3.8.2.tar 					/root/helm-v3.8.2.tar
-scp root@172.30.0.102:/root/kubernetes-v1.25.0.tar 				/root/kubernetes-v1.25.0.tar
+scp root@10.88.201.20:/root/sealos_4.3.3_linux_amd64.tar.gz 	/root/sealos_4.3.3_linux_amd64.tar.gz
+scp root@10.88.201.20:/root/helm-v3.8.2.tar 					/root/helm-v3.8.2.tar
+scp root@10.88.201.20:/root/kubernetes-v1.25.0.tar 				/root/kubernetes-v1.25.0.tar
 ```
 
 
@@ -138,7 +138,7 @@ apt install -y iptables
 echo "xxx" > password
 
 sealos run labring/kubernetes:v1.25.0 \
-     --masters 172.30.0.98,172.30.0.97,172.30.0.100  -p $(cat password)
+     --masters 10.88.201.31,10.88.201.32,10.88.201.33  -p $(cat password)
 ```
 
 去除主节点的污点
@@ -175,7 +175,7 @@ journalctl -xefu containerd
 ```
 mkdir -p /run/systemd/resolve
 cp /etc/resolv.conf /run/systemd/resolve/resolv.conf
-
+cat /run/systemd/resolve/resolv.conf
 
 systemctl daemon-reload
 systemctl restart kubelet
@@ -223,7 +223,7 @@ EOF
 添加之前记得对服务器做初始化
 
 ```
-sealos add --nodes 192.168.0.54,192.168.0.254,192.168.0.79,192.168.0.125 -p $(cat password)
+sealos add --nodes 10.88.201.61,10.88.201.62,10.88.201.63 -p $(cat password)
 ```
 
 # 安装k8s组件
