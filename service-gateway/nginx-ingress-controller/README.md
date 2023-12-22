@@ -7,6 +7,22 @@ helm uninstall nginx --namespace nginx
 ```
 
 ```shell
+kubectl create ns nginx
+kubectl apply -f loki-promtail-middleware.yaml
+helm upgrade --install nginx-oss nginx-ingress-controller/ --namespace nginx --create-namespace -f oss/values.yaml
+
+helm uninstall nginx-oss --namespace nginx
+```
+
+```shell
+kubectl create ns nginx
+kubectl apply -f loki-promtail-middleware.yaml
+helm upgrade --install nginx-service nginx-ingress-controller/ --namespace nginx --create-namespace -f service/values.yaml
+
+helm uninstall nginx-service --namespace nginx
+```
+
+```shell
 kubectl -n nginx get daemonset
 
 kubectl -n nginx get pod -o wide

@@ -187,15 +187,9 @@ kubectl apply -f	object.yaml
 kubectl -n rook-ceph wait pods -l rgw=my-store --for=condition=Ready=true --timeout=180s
 kubectl apply -f	object-user.yaml
 kubectl apply -f	object-ingress.yaml
-
 kubectl apply -f	object-storage-ui.yaml
+kubectl apply -f	svc-out.yaml
 kubectl -n rook-ceph wait pods -l app=oss-ui --for=condition=Ready=true --timeout=180s
-```
-
-临时网络
-
-```
-kubectl apply -f svc-out.yaml
 ```
 
 使用ssd作为hdd加速盘
@@ -297,6 +291,8 @@ kubectl -n rook-ceph get secret
 kubectl -n rook-ceph get CephObjectStore
 
 kubectl -n rook-ceph edit CephObjectStore my-store
+
+kubectl -n rook-ceph describe pvc data-oss-ui-0
 
 kubectl -n rook-ceph describe pod -l app=rook-ceph-operator
 kubectl -n rook-ceph describe pod -l app=prepare-image
@@ -447,6 +443,8 @@ kubectl delete -f 	cluster.yaml
 kubectl delete -f 	operator.yaml
 kubectl delete -f 	rook/deploy/examples/crds.yaml
 kubectl delete -f 	rook/deploy/examples/common.yaml
+
+kubectl -n rook-ceph delete pvc data-oss-ui-0
 ```
 
 在mon的主机上
@@ -532,7 +530,7 @@ Backend
 
 ​			Secret access key:	KFPIO6AXaHs8VfkbHZDZsz2fHgsTvHEWmgAJOjUo
 
-​			Endpoint:			http://10.88.201.23:31483
+​			Endpoint:			http://10.88.201.61:31483
 
 
 

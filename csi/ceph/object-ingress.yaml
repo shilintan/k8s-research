@@ -10,6 +10,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
     nginx.ingress.kubernetes.io/enable-cors: "true"
 spec:
+  ingressClassName: nginx-oss
   rules:
     - host: oss.shilintan.com
       http:

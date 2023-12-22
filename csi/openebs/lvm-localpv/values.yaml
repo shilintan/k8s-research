@@ -46,7 +46,8 @@ lvmNode:
   ## Labels to be added to openebs-lvm node pods
   podLabels:
     app: openebs-lvm-node
-  nodeSelector: {}
+  nodeSelector:
+    "shilintan.io/service-type-storage-openebs": "v"
   tolerations: []
   securityContext: {}
   labels: {}
@@ -124,7 +125,8 @@ lvmController:
   ## Labels to be added to openebs-lvm controller pods
   podLabels:
     name: openebs-lvm-controller
-  nodeSelector: {}
+  nodeSelector:
+    "shilintan.io/service-type-storage-openebs": "v"
   tolerations: []
   securityContext: {}
   priorityClass:

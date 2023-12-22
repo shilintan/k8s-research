@@ -9,8 +9,9 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
 spec:
+#  ingressClassName: nginx-oss
   rules:
-    - host: oss-ui.shilintan.com
+    - host: oss-ui.ops.shilintan.com
       http:
         paths:
           - pathType: Prefix
@@ -96,7 +97,7 @@ spec:
     - metadata:
         name: data
       spec:
-        storageClassName: openebs-lvmpv
+        storageClassName: rook-ceph-block
         accessModes:
           - ReadWriteOnce
         resources:
