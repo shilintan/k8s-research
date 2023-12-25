@@ -215,56 +215,56 @@ spec:
      mgr:
        limits:
          cpu: "2000m"
-         memory: "2048Mi"
+         memory: "3072Mi"
        requests:
          cpu: "100m"
          memory: "100Mi"
      mon:
        limits:
          cpu: "2000m"
-         memory: "2048Mi"
+         memory: "3072Mi"
        requests:
          cpu: "100m"
          memory: "100Mi"
      osd:
        limits:
          cpu: "2000m"
-         memory: "2048Mi"
+         memory: "5120Mi"
        requests:
          cpu: "100m"
          memory: "100Mi"
      osd-hdd:
        limits:
          cpu: "2000m"
-         memory: "2048Mi"
+         memory: "5120Mi"
        requests:
          cpu: "100m"
          memory: "100Mi"
      osd-ssd:
        limits:
          cpu: "2000m"
-         memory: "2048Mi"
+         memory: "5120Mi"
        requests:
          cpu: "100m"
          memory: "100Mi"
      osd-nvme:
        limits:
          cpu: "2000m"
-         memory: "2048Mi"
+         memory: "5120Mi"
        requests:
          cpu: "100m"
          memory: "100Mi"
      prepareosd:
        limits:
          cpu: "2000m"
-         memory: "2048Mi"
+         memory: "5120Mi"
        requests:
          cpu: "100m"
          memory: "100Mi"
      mgr-sidecar:
        limits:
          cpu: "2000m"
-         memory: "2048Mi"
+         memory: "3072Mi"
        requests:
          cpu: "100m"
          memory: "100Mi"

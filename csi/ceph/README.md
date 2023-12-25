@@ -638,3 +638,24 @@ TEST_PATH=/root/test
 
 https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3/1.12.594
 
+
+
+# 多环境文件迁移
+
+下载客户端
+
+​	https://dl.min.io/client/mc/release/windows-amd64/mc.exe
+
+
+
+下载源端文件夹
+
+```
+mc alias set ss3 http://: EIKH91E57ZQ4H1HF4LSQ bBSzQu3FK3dWTDWXI0mZ25JhI0CGCXDK1WoxTEve
+SOURCE_BUCKET_NAME=bigdatacloud
+TARGET_BUCKET_NAME=bigdatacloud
+mc mb ss3/${SOURCE_BUCKET_NAME}
+
+
+```
+
