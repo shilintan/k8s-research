@@ -331,6 +331,7 @@ kubectl -n rook-ceph delete pod -l app=prepare-image
 kubectl -n rook-ceph delete pod -l mon=a
 kubectl -n rook-ceph delete pod -l mon=b
 kubectl -n rook-ceph delete pod -l mon=c
+kubectl -n rook-ceph delete pod -l app=oss-ui
 
 kubectl -n rook-ceph edit pod rook-ceph-mgr-a-c9bfcbff9-7dzxk
 kubectl -n rook-ceph edit pod rook-ceph-mgr-b-6f47cd9574-c9zp
@@ -404,12 +405,14 @@ kubectl -n rook-ceph exec -it oss-ui-0 -- bash
 ```
 kubectl apply -f test-rdb.yaml
 
-kubectl delete -f test-rdb.yaml
 
 kubectl get pvc
 kubectl get pod
 kubectl describe pvc csi-rbd-demo-ephemeral-pod-mypvc
 kubectl describe pod csi-rbd-demo-ephemeral-pod
+
+
+kubectl delete -f test-rdb.yaml
 ```
 
 
@@ -530,7 +533,7 @@ Backend
 
 ​			Secret access key:	KFPIO6AXaHs8VfkbHZDZsz2fHgsTvHEWmgAJOjUo
 
-​			Endpoint:			http://10.88.201.61:31483
+​			Endpoint:			http://10.88.201.141:31483
 
 
 

@@ -130,6 +130,7 @@ cat /etc/hosts
 ```
 apt update -y
 apt install -y iptables
+apt install -y vim
 ```
 
 ### 安装k8s(集群)
@@ -138,7 +139,7 @@ apt install -y iptables
 echo "xxx" > password
 
 sealos run labring/kubernetes:v1.25.0 \
-     --masters 10.88.201.31,10.88.201.32,10.88.201.33  -p $(cat password)
+     --masters 10.88.201.101,10.88.201.102,10.88.201.103  -p $(cat password)
 ```
 
 去除主节点的污点
@@ -223,7 +224,7 @@ EOF
 添加之前记得对服务器做初始化
 
 ```
-sealos add --nodes 10.88.201.36,10.88.201.37,10.88.201.38,10.88.201.39,10.88.201.40,10.88.201.41,10.88.201.42,10.88.201.43,10.88.201.44 -p $(cat password)
+sealos add --nodes 10.88.201.106,10.88.201.107,10.88.201.108,10.88.201.109,10.88.201.110,10.88.201.111,10.88.201.112,10.88.201.113,10.88.201.114 -p $(cat password)
 ```
 
 # 安装k8s组件

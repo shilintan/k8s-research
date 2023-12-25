@@ -1,6 +1,6 @@
 ```shell
 kubectl create ns nginx
-kubectl apply -f loki-promtail-middleware.yaml
+kubectl -n nginx apply -f loki-promtail-middleware.yaml
 helm upgrade --install nginx nginx-ingress-controller/ --namespace nginx --create-namespace -f values.yaml
 
 helm uninstall nginx --namespace nginx
@@ -8,7 +8,7 @@ helm uninstall nginx --namespace nginx
 
 ```shell
 kubectl create ns nginx
-kubectl apply -f loki-promtail-middleware.yaml
+kubectl -n nginx apply -f loki-promtail-middleware.yaml
 helm upgrade --install nginx-oss nginx-ingress-controller/ --namespace nginx --create-namespace -f oss/values.yaml
 
 helm uninstall nginx-oss --namespace nginx
@@ -16,7 +16,7 @@ helm uninstall nginx-oss --namespace nginx
 
 ```shell
 kubectl create ns nginx
-kubectl apply -f loki-promtail-middleware.yaml
+kubectl -n nginx apply -f loki-promtail-middleware.yaml
 helm upgrade --install nginx-service nginx-ingress-controller/ --namespace nginx --create-namespace -f service/values.yaml
 
 helm uninstall nginx-service --namespace nginx
@@ -32,6 +32,7 @@ kubectl -n nginx get svc
 
 kubectl -n nginx describe daemonset nginx-nginx-ingress-controller
 kubectl -n nginx describe pod -l app.kubernetes.io/name=nginx-ingress-controller
+kubectl -n nginx describe pod nginx-service-nginx-ingress-controller-dc9tf
 kubectl -n nginx delete   pod nginx-nginx-ingress-controller-6pqj7
 kubectl -n nginx get pods | grep nginx-nginx-ingress-controlle |awk '{print $1}'|xargs kubectl -n nginx logs -f --tail 300
 kubectl -n nginx logs -f --tail 300 nginx-nginx-ingress-controller-4w877
