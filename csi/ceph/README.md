@@ -82,19 +82,13 @@ rbd image 'img':
         stripe count: 4
 ```
 
+元数据使用ssd
 
+ceph bluestore使用ssd
 
-## 元数据使用ssd
+radosgw 多加节点资源、副本数量
 
-
-
-## ceph bluestore使用ssd
-
-
-
-## radosgw 节点资源、副本数量
-
-
+osd建议不要基于已有ceph块
 
 
 
@@ -104,11 +98,29 @@ rbd image 'img':
 
 
 
-# 业务场景
+# 资源计算
 
-oss文件存储场景
+ceph:
+
+​	mon:	1c3g+50g-ssd
+
+​	mgr:	1c3g
+
+​	mds:	1c3g
+
+​	rgw:	 1c2g
+
+​	osd:	  1c5g, 50c250g
+
+system:	   1c1g
+
+log:		  1c1g
+
+nginx:		1c1g
 
 
+
+计算公式: 7c15g + 磁盘数量 x 1c5g
 
 # 部署
 
@@ -136,10 +148,6 @@ cat >> /etc/fstab <<EOF
 EOF
 systemctl daemon-reload
 ```
-
-
-
-建议不要基于已有ceph块
 
 
 
@@ -174,13 +182,13 @@ kubectl -n rook-ceph wait pods -l mon=a --for=condition=Ready=true --timeout=180
 kubectl -n rook-ceph wait pods -l app=rook-ceph-tools --for=condition=Ready=true --timeout=180s
 ```
 
-rdb
+## rdb
 
 ```
 kubectl apply -f	rbd-storageclass.yaml
 ```
 
-rgw
+## rgw
 
 ```
 kubectl apply -f	object.yaml
@@ -279,7 +287,7 @@ s3cmd setcors cors.xml s3://culturecloud
 
 
 
-调试
+# 调试
 
 ```
 kubectl -n rook-ceph get all
@@ -398,7 +406,7 @@ kubectl -n rook-ceph logs -f --tail 300 oss-ui-0
 kubectl -n rook-ceph exec -it oss-ui-0 -- bash
 ```
 
-# 测试
+# 集成测试
 
 ## rbd
 
@@ -416,18 +424,6 @@ kubectl delete -f test-rdb.yaml
 ```
 
 
-
-# 调试
-
-```
-kubectl -n rook-ceph exec deploy/rook-ceph-operator -- curl $(kubectl -n rook-ceph get svc -l app=rook-ceph-mon -o jsonpath='{.items[0].spec.clusterIP}'):3300 2>/dev/null
-
-kubectl -n rook-ceph exec deploy/rook-ceph-operator -- curl 172.30.0.97:3300 2>/dev/null
-kubectl -n rook-ceph exec deploy/rook-ceph-operator -- curl 172.30.0.98:3300 2>/dev/null
-kubectl -n rook-ceph exec deploy/rook-ceph-operator -- curl 172.30.0.100:3300 2>/dev/null
-
-172.30.0.97:3300
-```
 
 
 
@@ -493,7 +489,11 @@ rm -rf /dev/ceph-*
 rm -rf /dev/mapper/ceph--*
 ```
 
-# 配置oss防盗链
+
+
+# 配置
+
+## 配置oss防盗链
 
 在ingress上
 
@@ -505,9 +505,7 @@ rm -rf /dev/mapper/ceph--*
       }
 ```
 
-
-
-# 配置oss-ui
+## 配置oss-ui
 
 注意: 
 
