@@ -553,83 +553,6 @@ Backend
 
 ceph 与ssd的兼容性有问题, 貌似无法使用ssd
 
-# 测试
-
-```
-apt-get install -y fio
-
-mkdir -p /root/test
-TEST_PATH=/root/test
-```
-
-
-
-## 测试IOPS
-
-- 顺序读
-
-  ```routeros
-  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=8 --iodepth=1 --rw=read --bs=4k --size=8GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
-  ```
-
-- 顺序写
-
-  ```routeros
-  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=8 --iodepth=1 --rw=write --bs=4k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
-  ```
-
-- 随机读
-
-  ```routeros
-  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=8 --iodepth=1 --rw=randread --bs=4k --size=8GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
-  ```
-
-- 随机写
-
-  ```routeros
-  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=8 --iodepth=1 --rw=randwrite --bs=4k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
-  ```
-
-## 测试吞吐量
-
-- 顺序读
-
-  ```routeros
-  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=96 --iodepth=1 --rw=read --bs=64k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
-  ```
-
-- 顺序写
-
-  ```routeros
-  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=1 --numjobs=8 --iodepth=1 --rw=write --bs=64k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
-  ```
-
-- 随机读
-
-  ```routeros
-  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=96 --iodepth=1 --rw=randread --bs=64k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
-  ```
-
-- 随机写
-
-  ```routeros
-  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=8 --numjobs=96 --iodepth=1 --rw=randwrite --bs=64k --size=1GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
-  ```
-
-## 测试访问时延
-
-- 顺序读
-
-  ```routeros
-  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=1 --numjobs=1 --iodepth=1 --rw=read --bs=4k --size=8GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
-  ```
-
-- 顺序写
-
-  ```routeros
-  fio --name=test --directory=${TEST_PATH} --ioengine=libpmem --direct=1 --thread=1 --numjobs=1 --iodepth=1 --rw=write --bs=4k --size=8GB --norandommap=1 --randrepeat=0 --invalidate=1 --iodepth_batch=1 --sync=1 --scramble_buffers=0 --numa_cpu_nodes=0 --numa_mem_policy=bind:0 --cpus_allowed_policy=split
-  ```
-
 
 
 
@@ -651,11 +574,16 @@ https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3/1.12.594
 下载源端文件夹
 
 ```
-mc alias set ss3 http://: EIKH91E57ZQ4H1HF4LSQ bBSzQu3FK3dWTDWXI0mZ25JhI0CGCXDK1WoxTEve
-SOURCE_BUCKET_NAME=bigdatacloud
-TARGET_BUCKET_NAME=bigdatacloud
-mc mb ss3/${SOURCE_BUCKET_NAME}
+mc alias set ss3 http://oss.shilintan.com x x
+SOURCE_BUCKET_NAME=bigdatacenter
+mc cp --recursive ss3/${SOURCE_BUCKET_NAME}/ ${SOURCE_BUCKET_NAME}
+```
 
+上传文件夹
 
+```
+mc alias set ts3 http://oss.shilintan.com x x
+TARGET_BUCKET_NAME=bigdatacenter
+mc cp --recursive ${TARGET_BUCKET_NAME}/* ts3/${TARGET_BUCKET_NAME}/
 ```
 
