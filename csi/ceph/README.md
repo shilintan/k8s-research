@@ -88,9 +88,9 @@ ceph bluestore使用ssd
 
 radosgw 多加节点资源、副本数量
 
-osd建议不要基于已有ceph块
+osd建议不基于已有ceph块
 
-
+osd 给更多内存作为缓存
 
 # 兼容本地存储(openebs)
 
@@ -128,11 +128,7 @@ nginx:		1c1g
 
 aliyun 挂载的磁盘无法识别为ssd
 
-时间同步
-
-擦除磁盘
-
-有条件的情况下给很多内存给osd, 给很多cpu给mgr
+osd的盘的大小一致
 
 
 
@@ -163,7 +159,8 @@ lsblk -d -o name,rota
 
 ```
 kubectl create -f	rook/deploy/examples/crds.yaml -f rook/deploy/examples/common.yaml
-kubectl apply -f	rook/deploy/examples/monitoring/rbac.yaml	-f rook/deploy/examples/monitoring/service-monitor.yaml
+kubectl apply -f	rook/deploy/examples/monitoring/rbac.yaml
+kubectl apply -f     rook/deploy/examples/monitoring/csi-metrics-service-monitor.yaml -f rook/deploy/examples/monitoring/exporter-service-monitor.yaml -f rook/deploy/examples/monitoring/service-monitor.yaml
 kubectl apply -f	csi-ceph-conf-override.yaml
 kubectl apply -f	operator.yaml
 kubectl apply -f	prepare-image.yaml

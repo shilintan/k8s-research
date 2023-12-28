@@ -33,7 +33,7 @@ kubectl -n nginx get svc
 kubectl -n nginx describe daemonset nginx-nginx-ingress-controller
 kubectl -n nginx describe pod -l app.kubernetes.io/name=nginx-ingress-controller
 kubectl -n nginx describe pod nginx-service-nginx-ingress-controller-dc9tf
-kubectl -n nginx delete   pod nginx-nginx-ingress-controller-6pqj7
+kubectl -n nginx delete   pod nginx-nginx-ingress-controller-v4ngf nginx-nginx-ingress-controller-vfcvd nginx-nginx-ingress-controller-vr7v6
 kubectl -n nginx get pods | grep nginx-nginx-ingress-controlle |awk '{print $1}'|xargs kubectl -n nginx logs -f --tail 300
 kubectl -n nginx logs -f --tail 300 nginx-nginx-ingress-controller-4w877
 
