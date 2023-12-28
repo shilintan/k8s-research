@@ -35,7 +35,9 @@ kubectl -n nginx describe pod -l app.kubernetes.io/name=nginx-ingress-controller
 kubectl -n nginx describe pod nginx-service-nginx-ingress-controller-dc9tf
 kubectl -n nginx delete   pod nginx-nginx-ingress-controller-v4ngf nginx-nginx-ingress-controller-vfcvd nginx-nginx-ingress-controller-vr7v6
 kubectl -n nginx get pods | grep nginx-nginx-ingress-controlle |awk '{print $1}'|xargs kubectl -n nginx logs -f --tail 300
-kubectl -n nginx logs -f --tail 300 nginx-nginx-ingress-controller-4w877
+kubectl -n nginx logs -f --tail 300 nginx-service-nginx-ingress-controller-66j49 promtail
+kubectl -n nginx logs -f --tail 300 nginx-service-nginx-ingress-controller-8n9wr promtail
+kubectl -n nginx logs -f --tail 300 nginx-service-nginx-ingress-controller-gqm5j promtail
 
 kubectl -n nginx exec -it nginx-nginx-ingress-controller-4w877 -- bash
 ```

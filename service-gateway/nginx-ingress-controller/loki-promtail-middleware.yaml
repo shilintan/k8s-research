@@ -1,5 +1,4 @@
 ---
-# loki
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -18,8 +17,8 @@ data:
           - targets:
               - localhost
             labels:
-              scrape_job: gateway-nginx
               __path__: /mnt/**/*.log
+              scrape_job: gateway-nginx
               namespace: ${NAMESPACE}
               app: ${SERVICENAME}
               pod: ${HOSTNAME}
