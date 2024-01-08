@@ -209,6 +209,8 @@ extraArgs: {}
 extraEnvVars:
   - name: TZ
     value: Asia/Shanghai
+  - name: restart
+    value: "3"
 ## @param extraEnvVarsCM Name of a existing ConfigMap containing extra environment variables
 ##
 extraEnvVarsCM: ""
@@ -942,7 +944,7 @@ rbac:
 pdb:
   ## @param pdb.create Enable/disable a Pod Disruption Budget creation for Controller
   ##
-  create: false
+  create: true
   ## @param pdb.minAvailable Minimum number/percentage of Controller pods that should remain scheduled
   ##
   minAvailable: 1

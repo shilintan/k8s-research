@@ -20,8 +20,8 @@ middleware:
     - s: mongo-express:1.0.0-20
       t: registry.cn-shanghai.aliyuncs.com/shilintan-public/mongo-express:1.0.0-20
   mysql:
-    - s: mysql:8.0.35
-      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/mysql:8.0.35
+    - s: mysql:8.2
+      t: registry.cn-shanghai.aliyuncs.com/shilintan-public/mysql:8.2
     - s: mysql/mysql-router:8.0.32
       t: registry.cn-shanghai.aliyuncs.com/shilintan-public/mysql_mysql-router:8.0.32
     - s: mydumper/mydumper:v0.15.2-6

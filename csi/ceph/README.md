@@ -192,7 +192,7 @@ kubectl apply -f	object.yaml
 kubectl -n rook-ceph wait pods -l rgw=my-store --for=condition=Ready=true --timeout=180s
 kubectl apply -f	object-user.yaml
 kubectl apply -f	object-ingress.yaml
-kubectl apply -f	object-storage-ui.yaml
+kubectl apply -f	ceph-radosgw-ui.yaml
 kubectl apply -f	svc-out.yaml
 kubectl -n rook-ceph wait pods -l app=oss-ui --for=condition=Ready=true --timeout=180s
 ```
@@ -218,9 +218,9 @@ kubectl -n rook-ceph describe pod load-generator
 kubectl -n rook-ceph logs -f --tail 300 load-generator
 
 
-mc alias set s3 http://rook-ceph-rgw-my-store:80 EIKH91E57ZQ4H1HF4LSQ bBSzQu3FK3dWTDWXI0mZ25JhI0CGCXDK1WoxTEve
+mc alias set s3 http://rook-ceph-rgw-my-store:80 aa bb
 
-BUCKET_NAME=bigdatacloud
+BUCKET_NAME=bigdatacabinet
 mc mb s3/${BUCKET_NAME}
 mc anonymous set download s3/${BUCKET_NAME}
 mc anonymous get-json s3/${BUCKET_NAME}
@@ -528,7 +528,7 @@ Backend
 
 ​			Secret access key:	KFPIO6AXaHs8VfkbHZDZsz2fHgsTvHEWmgAJOjUo
 
-​			Endpoint:			http://10.88.201.141:31483
+​			Endpoint:			http://172.30.0.100:31483
 
 
 
