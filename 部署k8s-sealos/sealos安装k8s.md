@@ -32,6 +32,10 @@ sealos save -o calico-v3.24.1.tar labring/calico:v3.24.1
 
 ## ctr导出离线镜像
 
+```
+ctr -n k8s.io i ls
+```
+
 思路: ctr -n k8s.io i export --all-platform xxx.tar xxx:xxx
 
 
@@ -110,9 +114,18 @@ rm -rf kubernetes-v1.25.0.tar helm-v3.8.2.tar
 
 思路: ctr i import/load
 
+```
+ctr -n k8s.io i import coredns.tar
 
 
-### 修改主机名(可选)
+ctr -n k8s.io i ls|grep coredns
+
+rm -rf coredns.tar
+```
+
+
+
+## 修改主机名(可选)
 
 ```
 my_or_hostname="k8s-$(hostname -I|awk '{print $1}')" && my_cus_hostname=${my_or_hostname//./-} && hostnamectl set-hostname ${my_cus_hostname}
@@ -125,7 +138,7 @@ cat /etc/hostname
 cat /etc/hosts
 ```
 
-### 安装依赖包
+## 安装依赖包
 
 ```
 apt update -y
@@ -133,7 +146,7 @@ apt install -y iptables
 apt install -y vim
 ```
 
-### 安装k8s(集群)
+## 安装k8s(集群)
 
 ```
 echo "xxx" > password
@@ -148,7 +161,7 @@ sealos run labring/kubernetes:v1.25.0 \
 kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
 ```
 
-### 安装k8s(单机)
+## 安装k8s(单机)
 
 ```
 sealos run labring/kubernetes:v1.25.0 labring/helm:v3.8.2 --single
@@ -158,7 +171,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-
 kubectl taint nodes --all node.kubernetes.io/unreachable:NoSchedule-
 ```
 
-### 修改cri配置文件
+## 修改cri配置文件
 
 使用镜像代理仓库
 
@@ -192,7 +205,7 @@ crictl img
 crictl pull openebs/lvm-driver:1.2.0
 ```
 
-### 内核优化
+## 内核优化
 
 `服务器-调优-内核参数.md`
 

@@ -7,6 +7,12 @@ kubectl -n kube-system edit deploy coredns
 
 新增:
 	hostPort: 53
+
+
+kubectl -n kube-system logs -f --tail 300 deploy/coredns
+kubectl -n kube-system delete pod coredns-5fc5c49558-zghrc
+kubectl -n kube-system get pod|grep coredns
+kubectl -n kube-system delete pod coredns-5fc5c49558-6x9sv
 ```
 
 
@@ -17,6 +23,8 @@ kubectl -n kube-system edit configmap coredns
 
         hosts {
                 192.168.31.107 web.shilintan.com
+                192.168.31.107 gateway.shilintan.com
+                192.168.31.107 minio.shilintan.com
                 fallthrough
         }
 ```
@@ -32,6 +40,9 @@ nslookup web-ctbigdatacenter.cabinet.shilintan.com 192.168.0.29
 ipconfig /flushdns
 ```
 
+```shell
+
+```
 
 
 安卓端
