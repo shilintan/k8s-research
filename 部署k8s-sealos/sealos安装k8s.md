@@ -5,7 +5,7 @@
 ```
 sealos_4.3.3_linux_amd64.tar.gz
 
-kubernetes-v1.25.0.tar
+kubernetes-v1.28.7.tar
 helm-v3.8.2.tar
 calico-v3.24.1.tar
 ```
@@ -19,12 +19,12 @@ calico-v3.24.1.tar
 ## sealos导出离线文件
 
 ```
-sealos pull labring/kubernetes:v1.25.0
-sealos pull labring/helm:v3.8.2
+sealos pull labring/kubernetes:v1.28.7
+sealos pull labring/helm:v3.9.4
 sealos pull labring/calico:v3.24.1
 
-sealos save -o kubernetes-v1.25.0.tar labring/kubernetes:v1.25.0
-sealos save -o helm-v3.8.2.tar labring/helm:v3.8.2
+sealos save -o kubernetes-v1.28.7.tar labring/kubernetes:v1.28.7
+sealos save -o helm-v3.9.4.tar labring/helm:v3.9.4
 sealos save -o calico-v3.24.1.tar labring/calico:v3.24.1
 ```
 
@@ -64,9 +64,9 @@ scp root@10.88.201.20:/root/kubernetes-v1.25.0.tar 				/root/kubernetes-v1.25.0.
 
 
 ```
-tar -zxvf sealos_4.3.3_linux_amd64.tar.gz sealos &&  chmod +x sealos && mv sealos /usr/bin
+tar -zxvf sealos_4.3.7_linux_amd64.tar.gz sealos &&  chmod +x sealos && mv sealos /usr/bin
 sealos version
-rm -rf sealos_4.3.3_linux_amd64.tar.gz
+rm -rf sealos_4.3.7_linux_amd64.tar.gz
 ```
 
 # 安装k8S
@@ -102,10 +102,10 @@ systemctl daemon-reload
 ## sealos导入离线文件
 
 ```shell
-sealos load -i kubernetes-v1.25.0.tar
-sealos load -i helm-v3.8.2.tar
+sealos load -i kubernetes-v1.28.7.tar
+sealos load -i helm-v3.9.4.tar
 sealos images
-rm -rf kubernetes-v1.25.0.tar helm-v3.8.2.tar
+# rm -rf kubernetes-v1.28.7.tar helm-v3.8.2.tar
 ```
 
 ## ctr导入离线文件
@@ -164,7 +164,7 @@ kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
 ## 安装k8s(单机)
 
 ```
-sealos run labring/kubernetes:v1.25.0 labring/helm:v3.8.2 --single
+sealos run kubernetes-v1.28.7.tar helm-v3.9.4.tar --single
 
 kubectl taint node --all node-role.kubernetes.io/control-plane-
 kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-
