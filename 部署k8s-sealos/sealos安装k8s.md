@@ -19,11 +19,20 @@ calico-v3.24.1.tar
 ## sealos导出离线文件
 
 ```
-sealos pull labring/kubernetes:v1.28.7
+sealos pull registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.26.14
+
+
+sealos save -o kubernetes-v1.26.14.tar  registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.26.14
+```
+
+
+
+```
+sealos pull registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.29.2
 sealos pull labring/helm:v3.9.4
 sealos pull labring/calico:v3.24.1
 
-sealos save -o kubernetes-v1.28.7.tar labring/kubernetes:v1.28.7
+sealos save -o kubernetes-v1.29.2.tar  registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.29.2
 sealos save -o helm-v3.9.4.tar labring/helm:v3.9.4
 sealos save -o calico-v3.24.1.tar labring/calico:v3.24.1
 ```
@@ -64,10 +73,12 @@ scp root@10.88.201.20:/root/kubernetes-v1.25.0.tar 				/root/kubernetes-v1.25.0.
 
 
 ```
-tar -zxvf sealos_4.3.7_linux_amd64.tar.gz sealos &&  chmod +x sealos && mv sealos /usr/bin
+tar -zxvf sealos_5.0.0-beta4_linux_amd64.tar.gz sealos &&  chmod +x sealos && mv sealos /usr/bin
 sealos version
-rm -rf sealos_4.3.7_linux_amd64.tar.gz
+rm -rf sealos_5.0.0-beta4_linux_amd64.tar.gz
 ```
+
+
 
 # 安装k8S
 
@@ -102,7 +113,7 @@ systemctl daemon-reload
 ## sealos导入离线文件
 
 ```shell
-sealos load -i kubernetes-v1.28.7.tar
+sealos load -i kubernetes-v1.25.0.tar
 sealos load -i helm-v3.9.4.tar
 sealos images
 # rm -rf kubernetes-v1.28.7.tar helm-v3.8.2.tar
@@ -164,7 +175,7 @@ kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
 ## 安装k8s(单机)
 
 ```
-sealos run kubernetes-v1.28.7.tar helm-v3.9.4.tar --single
+sealos run labring/kubernetes:v1.25.0 helm-v3.9.4.tar
 
 kubectl taint node --all node-role.kubernetes.io/control-plane-
 kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-
@@ -187,10 +198,6 @@ journalctl -xefu containerd
 将文件`cri/kubelet-config.yaml`  替换到-> `/var/lib/kubelet/config.yaml`
 
 ```
-mkdir -p /run/systemd/resolve
-cp /etc/resolv.conf /run/systemd/resolve/resolv.conf
-cat /run/systemd/resolve/resolv.conf
-
 systemctl daemon-reload
 systemctl restart kubelet
 systemctl status  kubelet
