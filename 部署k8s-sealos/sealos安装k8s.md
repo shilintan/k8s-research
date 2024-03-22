@@ -1,5 +1,12 @@
 [toc]
 
+# 上传pem文件(废弃)
+
+```
+mv /root/.ssh/shilintan-bigdata.pem /root/.ssh/id_rsa.pem
+chmod 600 /root/.ssh/id_rsa.pem
+```
+
 # 导出离线文件
 
 ```
@@ -19,25 +26,12 @@ calico-v3.24.1.tar
 ## sealos导出离线文件
 
 ```
-sealos pull registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.26.14
+sealos pull registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.27.12
+sealos pull registry.cn-shanghai.aliyuncs.com/labring/helm:v3.9.4
 
-
-sealos save -o kubernetes-v1.26.14.tar  registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.26.14
+sealos save -o kubernetes-v1.27.12.tar  registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.27.12
+sealos save -o helm-v3.9.4.tar          registry.cn-shanghai.aliyuncs.com/labring/helm:v3.9.4
 ```
-
-
-
-```
-sealos pull registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.29.2
-sealos pull labring/helm:v3.9.4
-sealos pull labring/calico:v3.24.1
-
-sealos save -o kubernetes-v1.29.2.tar  registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.29.2
-sealos save -o helm-v3.9.4.tar labring/helm:v3.9.4
-sealos save -o calico-v3.24.1.tar labring/calico:v3.24.1
-```
-
-
 
 ## ctr导出离线镜像
 
@@ -47,8 +41,6 @@ ctr -n k8s.io i ls
 
 思路: ctr -n k8s.io i export --all-platform xxx.tar xxx:xxx
 
-
-
 # 主机初始化
 
 修改镜像仓库
@@ -57,25 +49,27 @@ ctr -n k8s.io i ls
 sed -i 's#deb.debian.org#mirrors.163.com#g' /etc/apt/sources.list && sed -i 's#security.debian.org#mirrors.163.com#g' /etc/apt/sources.list && apt -y update
 ```
 
-
-
 # 安装sealos
 
 ## 通过scp拷贝文件
 
 ```
 # 从集群拷贝文件
-scp root@10.88.201.20:/root/sealos_4.3.3_linux_amd64.tar.gz 	/root/sealos_4.3.3_linux_amd64.tar.gz
-scp root@10.88.201.20:/root/helm-v3.8.2.tar 					/root/helm-v3.8.2.tar
-scp root@10.88.201.20:/root/kubernetes-v1.25.0.tar 				/root/kubernetes-v1.25.0.tar
+scp root@172.30.0.109:/root/kubernetes-v1.27.12.tar   /root/kubernetes-v1.27.12.tar
 ```
 
-
-
 ```
-tar -zxvf sealos_5.0.0-beta4_linux_amd64.tar.gz sealos &&  chmod +x sealos && mv sealos /usr/bin
+tar -zxvf sealos_4.3.7_linux_amd64.tar.gz sealos &&  chmod +x sealos && mv sealos /usr/bin
 sealos version
-rm -rf sealos_5.0.0-beta4_linux_amd64.tar.gz
+rm -rf sealos_4.3.7_linux_amd64.tar.gz
+```
+
+
+
+```
+tar -zxvf sealos_4.3.5_linux_amd64.tar.gz sealos &&  chmod +x sealos && mv sealos /usr/bin
+sealos version
+rm -rf sealos_4.3.5_linux_amd64.tar.gz
 ```
 
 
@@ -105,7 +99,7 @@ cat >> /etc/fstab <<EOF
 /data/kubelet     /var/lib/kubelet    none defaults,bind 0 0
 /data/containers  /var/lib/containers none defaults,bind 0 0
 /data/containerd  /var/lib/containerd none defaults,bind 0 0
-/data/etcd        /var/lib/etcd        none defaults,bind 0 0
+/data/etcd        /var/lib/etcd       none defaults,bind 0 0
 EOF
 systemctl daemon-reload
 ```
@@ -113,11 +107,20 @@ systemctl daemon-reload
 ## sealos导入离线文件
 
 ```shell
-sealos load -i kubernetes-v1.25.0.tar
-sealos load -i helm-v3.9.4.tar
+sealos load -i kubernetes-v1.27.11.tar
+sealos load -i helm-v3.14.1.tar
 sealos images
-# rm -rf kubernetes-v1.28.7.tar helm-v3.8.2.tar
+rm -rf kubernetes-v1.27.11.tar helm-v3.14.1.tar
 ```
+
+
+
+```
+sealos load -i kubernetes-v1.25.0.tar
+sealos images
+```
+
+
 
 ## ctr导入离线文件
 
@@ -160,10 +163,14 @@ apt install -y vim
 ## 安装k8s(集群)
 
 ```
-echo "xxx" > password
+echo "shilintan666_" > password
+sealos run registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.27.12 registry.cn-shanghai.aliyuncs.com/labring/helm:v3.9.4 --masters 172.30.0.109,172.30.0.110,172.30.0.111 -f -p "$(cat password)"
+```
 
-sealos run labring/kubernetes:v1.25.0 \
-     --masters 10.88.201.101,10.88.201.102,10.88.201.103  -p $(cat password)
+或者通过密钥认证(废弃)
+
+```
+-i /root/.ssh/id_rsa.pem
 ```
 
 去除主节点的污点
@@ -186,6 +193,16 @@ kubectl taint nodes --all node.kubernetes.io/unreachable:NoSchedule-
 
 使用镜像代理仓库
 
+```
+mkdir -p /run/systemd/resolve
+cp /etc/resolv.conf /run/systemd/resolve/resolv.conf
+cat /run/systemd/resolve/resolv.conf
+
+
+scp -i /root/.ssh/id_rsa.pem /var/lib/kubelet/config.yaml root@192.168.10.74:/var/lib/kubelet/config.yaml
+scp -i /root/.ssh/id_rsa.pem /var/lib/kubelet/config.yaml root@192.168.10.76:/var/lib/kubelet/config.yaml
+```
+
 将文件`cri/config.toml`	替换到-> `/etc/containerd/config.toml`
 
 ```
@@ -198,6 +215,9 @@ journalctl -xefu containerd
 将文件`cri/kubelet-config.yaml`  替换到-> `/var/lib/kubelet/config.yaml`
 
 ```
+mkdir -p /var/lib/kubelet
+vi /var/lib/kubelet/config.yaml
+
 systemctl daemon-reload
 systemctl restart kubelet
 systemctl status  kubelet
@@ -272,7 +292,7 @@ sealos add --nodes 10.88.201.106,10.88.201.107,10.88.201.108,10.88.201.109,10.88
 # 清理集群
 
 ```
-sealos reset
+sealos reset --masters 192.168.10.81,192.168.10.82,192.168.10.83 -p $(cat password)
 ```
 
 # 删除节点

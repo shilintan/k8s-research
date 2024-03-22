@@ -48,8 +48,6 @@ kubeReserved:
 evictionMaxPodGracePeriod: 60
 evictionPressureTransitionPeriod: 1m0s
 failSwapOn: true
-featureGates:
-  EphemeralContainers: true
 fileCheckFrequency: 20s
 hairpinMode: promiscuous-bridge
 healthzBindAddress: 0.0.0.0
