@@ -10,11 +10,10 @@ chmod 600 /root/.ssh/id_rsa.pem
 # 导出离线文件
 
 ```
-sealos_4.3.3_linux_amd64.tar.gz
+sealos_4.3.5_linux_amd64.tar.gz
 
-kubernetes-v1.28.7.tar
-helm-v3.8.2.tar
-calico-v3.24.1.tar
+kubernetes-v1.27.12.tar
+helm-v3.9.4.tar
 ```
 
 ### 上传离线文件到专有环境镜像仓库
@@ -59,20 +58,10 @@ scp root@172.30.0.109:/root/kubernetes-v1.27.12.tar   /root/kubernetes-v1.27.12.
 ```
 
 ```
-tar -zxvf sealos_4.3.7_linux_amd64.tar.gz sealos &&  chmod +x sealos && mv sealos /usr/bin
-sealos version
-rm -rf sealos_4.3.7_linux_amd64.tar.gz
-```
-
-
-
-```
 tar -zxvf sealos_4.3.5_linux_amd64.tar.gz sealos &&  chmod +x sealos && mv sealos /usr/bin
 sealos version
 rm -rf sealos_4.3.5_linux_amd64.tar.gz
 ```
-
-
 
 # 安装k8S
 
@@ -107,20 +96,11 @@ systemctl daemon-reload
 ## sealos导入离线文件
 
 ```shell
-sealos load -i kubernetes-v1.27.11.tar
-sealos load -i helm-v3.14.1.tar
+sealos load -i kubernetes-v1.27.12.tar
+sealos load -i helm-v3.9.4.tar
 sealos images
-rm -rf kubernetes-v1.27.11.tar helm-v3.14.1.tar
+rm -rf kubernetes-v1.27.12.tar helm-v3.9.4.tar
 ```
-
-
-
-```
-sealos load -i kubernetes-v1.25.0.tar
-sealos images
-```
-
-
 
 ## ctr导入离线文件
 
@@ -163,7 +143,7 @@ apt install -y vim
 ## 安装k8s(集群)
 
 ```
-echo "shilintan666_" > password
+echo "" > password
 sealos run registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.27.12 registry.cn-shanghai.aliyuncs.com/labring/helm:v3.9.4 --masters 172.30.0.109,172.30.0.110,172.30.0.111 -f -p "$(cat password)"
 ```
 
@@ -182,7 +162,7 @@ kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
 ## 安装k8s(单机)
 
 ```
-sealos run labring/kubernetes:v1.25.0 helm-v3.9.4.tar
+sealos run registry.cn-shanghai.aliyuncs.com/labring/kubernetes:v1.27.12 registry.cn-shanghai.aliyuncs.com/labring/helm:v3.9.4
 
 kubectl taint node --all node-role.kubernetes.io/control-plane-
 kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-
@@ -250,10 +230,6 @@ cat >> /etc/hosts <<EOF
 EOF
 ```
 
-
-
-
-
 ## 修改节点池
 
 `节点池-local.md`
@@ -313,8 +289,3 @@ sealos delete --nodes 192.168.0.101
 kubectl delete node 192.168.0.101
 ```
 
-# 问题
-
-一个ecs集群只能创建一个?
-
-偶发性的创建失败
